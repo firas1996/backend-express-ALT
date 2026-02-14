@@ -1,10 +1,12 @@
-const mongoose = require("mongoose");
+const { Schema, model } = require("mongoose");
 const validator = require("validator");
 
-const userSchema = mongoose.Schema({
+const userSchema = Schema({
   name: {
     type: String,
     required: [true, "The name is required !!!"],
+    minlength: 3,
+    maxlength: 50,
   },
   email: {
     type: String,
@@ -24,7 +26,7 @@ const userSchema = mongoose.Schema({
     required: [true, "The password is required !!!"],
     minlength: 8,
     validate: {
-      validator: (cPass) => {
+      validator: function (cPass) {
         return cPass === this.password;
       },
       message: "Pass and cPass does not match !!!",
@@ -45,6 +47,6 @@ const userSchema = mongoose.Schema({
   },
 });
 
-const User = mongoose.model("User", userSchema);
+const User = model("User", userSchema);
 
 module.exports = User;
